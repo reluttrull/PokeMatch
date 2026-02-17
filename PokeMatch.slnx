@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Aspire/">
+    <Project Path="PokeMatch.AppHost/PokeMatch.AppHost.csproj" />
+    <Project Path="PokeMatch.ServiceDefaults/PokeMatch.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/" />
+  <Project Path="PokeMatch/PokeMatch.Client/PokeMatch.Client.csproj" />
+  <Project Path="PokeMatch/PokeMatch/PokeMatch.csproj" />
+</Solution>
