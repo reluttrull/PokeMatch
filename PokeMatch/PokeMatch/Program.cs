@@ -1,3 +1,4 @@
+using DotNetEnv;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,21 @@ using PokeMatch.Components.Account;
 using PokeMatch.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string root = Directory.GetCurrentDirectory();
+string solutionEnvironmentPath = Path.Combine(root, $"../../.env.{builder.Environment.EnvironmentName}");
+string solutionDefaultPath = Path.Combine(root, "../../.env");
+if (builder.Environment.IsDevelopment())
+{
+    if (File.Exists(solutionEnvironmentPath))
+    {
+        Env.Load(solutionEnvironmentPath);
+    }
+    else
+    {
+        Env.Load(solutionDefaultPath);
+    }
+}
 
 builder.AddServiceDefaults();
 

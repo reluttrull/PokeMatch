@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DeckApi\DeckApi.csproj" />
     <ProjectReference Include="..\PokeMatch\PokeMatch\PokeMatch.csproj" />
   </ItemGroup>
 

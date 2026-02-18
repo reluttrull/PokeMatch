@@ -3,7 +3,13 @@
     <Project Path="PokeMatch.AppHost/PokeMatch.AppHost.csproj" />
     <Project Path="PokeMatch.ServiceDefaults/PokeMatch.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/Solution Items/" />
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+    <File Path=".env.Development" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="DeckApi/DeckApi.csproj" />
   <Project Path="PokeMatch/PokeMatch.Client/PokeMatch.Client.csproj" />
   <Project Path="PokeMatch/PokeMatch/PokeMatch.csproj" />
+  <Project Path="Shared/PokeMatch.Shared.csproj" Id="4da6d72b-0b29-46e4-9439-ee4a5c7fc08c" />
 </Solution>
