@@ -2,11 +2,14 @@
     height: 100dvh;
     width: 100dvw;
     display: grid;
-    grid-template-rows: 1fr 9fr 3fr 9fr 1fr;
+    grid-template-rows: auto 1fr auto 1fr auto;
 }
 
 .card-container {
-    aspect-ratio: 1 / 1.14;
+    width: 100%;
+    min-height: 60px;
+    max-width: 180px;
+    aspect-ratio: 63 / 88;
 }
 
 .card {
@@ -21,6 +24,7 @@
 
 .opponent-info {
     background-color: red;
+    color: white;
 }
 
 .opponent-area, .player-area {
@@ -31,7 +35,9 @@
 
 .opponent-play-area, .player-play-area {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    justify-items: center;
+    align-content: center;
 }
 
 .opponent-hand, .player-hand {
@@ -39,11 +45,28 @@
 }
 
 .opponent-bench, .player-bench {
+    display: grid;
     background-color: #bbb;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 100%;
+    margin: 10px 0 10px 0;
+}
+
+.bench-spot {
+    margin: 0 20px 0 20px;
+    background-color: fuchsia;
 }
 
 .opponent-active, .player-active {
+    display: grid;
+    grid-template-columns: 1fr;
     background-color: #aaa;
+}
+
+.active-spot {
+    margin: 0 20px 0 20px;
+    background-color: fuchsia;
 }
 
 .shared-area {
@@ -56,11 +79,12 @@
 }
 
 .stadium {
-    background-color: lightsteelblue;
+    background-color: fuchsia;
 }
 
 .timer {
     background-color: black;
+    color: white;
 }
 
 .player-info-row {
@@ -70,4 +94,5 @@
 
 .player-info {
     background-color: blue;
+    color: white;
 }
