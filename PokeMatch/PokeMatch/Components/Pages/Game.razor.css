@@ -7,7 +7,7 @@
 
 .card-container {
     width: 100%;
-    min-height: 60px;
+    min-height: 100px;
     max-width: 180px;
     aspect-ratio: 63 / 88;
 }
@@ -54,7 +54,6 @@
 }
 
 .bench-spot {
-    margin: 0 20px 0 20px;
     background-color: fuchsia;
 }
 
@@ -65,7 +64,19 @@
 }
 
 .active-spot {
-    margin: 0 20px 0 20px;
+    background-color: fuchsia;
+}
+
+.opponent-hand, .player-hand {
+    display: flex;
+    gap: 5px;
+}
+
+.opponent-hand-spot {
+    background-color: cyan;
+}
+
+.player-hand-spot {
     background-color: fuchsia;
 }
 
@@ -76,6 +87,35 @@
 
 .side-pocket {
     background-color: gray;
+}
+
+.opponent-prizes, .player-prizes {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+    margin: 10px;
+    max-width: 100%;
+}
+
+.opponent-prizes > .card-container,
+.player-prizes > .card-container {
+    background-color: cyan;
+}
+
+.opponent-left-side-pocket,
+.player-right-side-pocket {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+}
+
+.opponent-deck, .player-deck {
+    background-color: cyan;
+}
+
+.opponent-discard, .player-discard {
+    background-color: fuchsia;
 }
 
 .stadium {
