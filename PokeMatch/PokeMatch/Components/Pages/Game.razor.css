@@ -1,0 +1,26 @@
+.container {
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr 3fr 1fr;
+}
+
+.card-container {
+    aspect-ratio: 1 / 1.14;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+}
+
+.opponent-info {
+    background-color: red;
+}
+
+.opponent-area, .player-area {
+    background-color: gray;
+}
+
+.player-info {
+    background-color: blue;
+}
