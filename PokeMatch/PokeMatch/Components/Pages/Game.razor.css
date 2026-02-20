@@ -1,7 +1,8 @@
 .container {
     height: 100dvh;
+    width: 100dvw;
     display: grid;
-    grid-template-rows: 1fr 3fr 1fr 3fr 1fr;
+    grid-template-rows: 1fr 9fr 3fr 9fr 1fr;
 }
 
 .card-container {
@@ -13,12 +14,58 @@
     height: 100%;
 }
 
+.opponent-info-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
 .opponent-info {
     background-color: red;
 }
 
 .opponent-area, .player-area {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    background-color: lightgray;
+}
+
+.opponent-play-area, .player-play-area {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.opponent-hand, .player-hand {
+    background-color: #ccc;
+}
+
+.opponent-bench, .player-bench {
+    background-color: #bbb;
+}
+
+.opponent-active, .player-active {
+    background-color: #aaa;
+}
+
+.shared-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 8fr 1fr 1fr;
+}
+
+.side-pocket {
     background-color: gray;
+}
+
+.stadium {
+    background-color: lightsteelblue;
+}
+
+.timer {
+    background-color: black;
+}
+
+.player-info-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 .player-info {

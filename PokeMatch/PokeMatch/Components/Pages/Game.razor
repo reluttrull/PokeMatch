@@ -2,11 +2,39 @@
 @layout EmptyLayout
 
 <div class="container">
-    <div class="opponent-info"></div>
-    <div class="opponent-area"></div>
-    <div class="shared-area"></div>
-    <div class="player-area"></div>
-    <div class="player-info"></div>
+    <div class="opponent-info-row">
+        <div></div>
+        <div class="opponent-info"></div>
+    </div>
+    <div class="opponent-area">
+        <div class="side-pocket"></div>
+        <div class="opponent-play-area">
+            <div class="opponent-hand"></div>
+            <div class="opponent-bench"></div>
+            <div class="opponent-active"></div>
+        </div>
+        <div class="side-pocket"></div>
+    </div>
+    <div class="shared-area">
+        <div></div>
+        <div class="stadium"></div>
+        <div></div>
+        <div class="timer"></div>
+        <div></div>
+    </div>
+    <div class="player-area">
+        <div class="side-pocket"></div>
+        <div class="player-play-area">
+            <div class="player-active"></div>
+            <div class="player-bench"></div>
+            <div class="player-hand"></div>
+        </div>
+        <div class="side-pocket"></div>
+    </div>
+    <div class="player-info-row">
+        <div class="player-info"></div>
+        <div></div>
+    </div>
 </div>
 
 @code {
