@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PokeMatch.ServiceDefaults\PokeMatch.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Shared\PokeMatch.Shared.csproj" />
     <ProjectReference Include="..\PokeMatch.Client\PokeMatch.Client.csproj" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.2" />
@@ -17,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.2" />
+    <PackageReference Include="StackExchange.Redis" Version="2.11.3" />
   </ItemGroup>
 
 </Project>

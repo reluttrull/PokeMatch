@@ -1,4 +1,7 @@
-﻿namespace PokeMatch.Model
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Collections;
+
+namespace PokeMatch.Model
 {
     public class Card
     {

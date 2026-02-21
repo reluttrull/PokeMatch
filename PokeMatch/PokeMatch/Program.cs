@@ -2,10 +2,12 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PokeMatch;
 using PokeMatch.Client.Pages;
 using PokeMatch.Components;
 using PokeMatch.Components.Account;
 using PokeMatch.Data;
+using PokeMatch.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,13 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.AddServiceDefaults();
+
+builder.Services.AddRedis();
+builder.Services.AddHttpClient<IDeckClient, DeckClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7097");
+});
+builder.Services.AddServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
