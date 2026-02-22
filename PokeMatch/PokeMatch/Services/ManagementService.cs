@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using PokeMatch.Components.Pages;
+using PokeMatch.Extensions;
 using PokeMatch.Model;
 using PokeMatch.Shared.Responses;
 
@@ -11,7 +13,7 @@ namespace PokeMatch.Services
         {
             _deckClient = deckClient;
         }
-        public async Task<Game> StartGame(int userId, CancellationToken token = default)
+        public async Task<GameState> StartGame(int userId, CancellationToken token = default)
         {
             if (userId == 0) // test data for now
             {
@@ -22,21 +24,22 @@ namespace PokeMatch.Services
                 DeckResponse? deckResponse2 = await _deckClient.GetDeckByIdAsync(1);
                 if (deckResponse1 is null || deckResponse2 is null) throw new NullReferenceException();
 
-                Game game = new(player1, player2, deckResponse1.MapFromResponse(), deckResponse2.MapFromResponse());
+                GameState game = new(player1, player2, deckResponse1.MapFromResponse(), deckResponse2.MapFromResponse());
+                game.InitializeGame();
 
                 return game;
             }
             throw new NotImplementedException();
         }
 
-        public async Task<Game> TryReloadMatchForUser(int userId, CancellationToken token = default)
+        public async Task<GameState> TryReloadMatchForUser(int userId, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
     }
     public interface IManagementService
     {
-        public Task<Game> TryReloadMatchForUser(int userId, CancellationToken token = default);
-        public Task<Game> StartGame(int userId, CancellationToken token = default);
+        public Task<GameState> TryReloadMatchForUser(int userId, CancellationToken token = default);
+        public Task<GameState> StartGame(int userId, CancellationToken token = default);
     }
 }

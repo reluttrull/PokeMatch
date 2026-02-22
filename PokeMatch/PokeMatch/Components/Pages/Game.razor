@@ -1,4 +1,6 @@
 ﻿@page "/game/{userId:int}"
+@using PokeMatch.Components.Modules
+@using PokeMatch.Model
 @using PokeMatch.Services
 @layout EmptyLayout
 @inject IManagementService ManagementService
@@ -84,13 +86,12 @@
                 <div class="bench-spot card-container" id="player-bench-5"></div>
             </div>
             <div class="player-hand">
-                <div class="player-hand-spot card-container" id="player-hand-1"></div>
-                <div class="player-hand-spot card-container" id="player-hand-2"></div>
-                <div class="player-hand-spot card-container" id="player-hand-3"></div>
-                <div class="player-hand-spot card-container" id="player-hand-4"></div>
-                <div class="player-hand-spot card-container" id="player-hand-5"></div>
-                <div class="player-hand-spot card-container" id="player-hand-6"></div>
-                <div class="player-hand-spot card-container" id="player-hand-7"></div>
+                    @foreach (Model.Card card in GameState?.Player1.Hand ?? [])
+                    {
+                        <div class="player-hand-spot card-container">
+                            <Card ImageUrl=@card.Image />
+                        </div>
+                    }
             </div>
         </div>
         <div class="side-pocket">
@@ -114,12 +115,12 @@
     [Parameter]
     public int UserId { get; set;  }
 
-    private Model.Game? GameState { get; set; }
+    private GameState? GameState { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
         GameState = await ManagementService.StartGame(UserId);
-        System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState.Player1.Deck.Cards.Count} cards in deck.");
+        System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState.Player1.Deck.Cards.Count} cards in deck and {GameState.Player1.Hand.Count} cards in hand.");
     }
 }

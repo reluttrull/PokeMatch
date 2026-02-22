@@ -10,11 +10,6 @@
     aspect-ratio: 63 / 88;
 }
 
-.card {
-    width: 100%;
-    height: 100%;
-}
-
 .opponent-info-row {
     display: grid;
     grid-template-columns: 1fr 2fr;

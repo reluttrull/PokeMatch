@@ -9,6 +9,8 @@
         public PlaySpot Active { get; set; } = new();
         public List<PlaySpot> Bench { get; set; } = [];
         public List<Card> DiscardPile { get; set; } = [];
+        public List<List<Card>> MulliganHands { get; set; } = [];
+        public int Mulligans { get; set; }
         public PlayerState(Player player, Deck deck)
         {
             Player = player;

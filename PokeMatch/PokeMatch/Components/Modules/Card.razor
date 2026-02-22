@@ -1,0 +1,10 @@
+﻿<div>
+    <img class="card" src="@ImageFullUrl" />
+</div>
+
+@code {
+    [Parameter]
+    public required string ImageUrl { get; set; }
+
+    public string ImageFullUrl => $"{ImageUrl}/low.png";
+}
