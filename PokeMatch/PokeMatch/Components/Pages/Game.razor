@@ -119,7 +119,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GameState = await ManagementService.TryReloadMatchForUser(UserId);
+        GameState = await ManagementService.StartGame(UserId);
         System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState.Player1.Deck.Cards.Count} cards in deck.");
     }
 }

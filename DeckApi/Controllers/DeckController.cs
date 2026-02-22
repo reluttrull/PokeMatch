@@ -10,6 +10,13 @@ namespace DeckApi.Controllers
     [ApiController]
     public class DeckController : ControllerBase
     {
+        private readonly ICardApiClient _apiClient;
+
+        public DeckController(ICardApiClient cardApiClient)
+        {
+            _apiClient = cardApiClient;
+        }
+
         [HttpGet]
         [Route("/api/decks/public")]
         public async Task<List<DeckBrief>> GetPublicDeckBriefs(CancellationToken token)
@@ -35,6 +42,7 @@ namespace DeckApi.Controllers
             if (decks is null) throw new SerializationException($"Problem deserializing deck data.");
             DeckResponse? deck = decks.FirstOrDefault(d => d.DeckId == id);
             if (deck is null) return null;
+            deck.Cards = await GatherCardData(deck.CardIds);
             return deck;
         }
 
@@ -50,6 +58,17 @@ namespace DeckApi.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<List<CardResponse>> GatherCardData(List<string> cardIds)
+        {
+            List<CardResponse> result = [];
+            foreach (string cardId in cardIds)
+            {
+                CardResponse? card = await _apiClient.GetCardByIdAsync(cardId);
+                if (card is not null) result.Add(card);
+            }
+            return result;
         }
     }
 }

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.11.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PokeMatch.ServiceDefaults\PokeMatch.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Shared\PokeMatch.Shared.csproj" />
   </ItemGroup>

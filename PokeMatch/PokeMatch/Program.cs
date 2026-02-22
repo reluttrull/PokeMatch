@@ -11,24 +11,8 @@ using PokeMatch.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string root = Directory.GetCurrentDirectory();
-string solutionEnvironmentPath = Path.Combine(root, $"../../.env.{builder.Environment.EnvironmentName}");
-string solutionDefaultPath = Path.Combine(root, "../../.env");
-if (builder.Environment.IsDevelopment())
-{
-    if (File.Exists(solutionEnvironmentPath))
-    {
-        Env.Load(solutionEnvironmentPath);
-    }
-    else
-    {
-        Env.Load(solutionDefaultPath);
-    }
-}
-
 builder.AddServiceDefaults();
 
-builder.Services.AddRedis();
 builder.Services.AddHttpClient<IDeckClient, DeckClient>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7097");

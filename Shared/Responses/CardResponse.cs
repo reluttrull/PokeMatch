@@ -5,57 +5,46 @@ using System.Text.Json.Serialization;
 
 namespace PokeMatch.Shared.Responses
 {
-    [JsonPolymorphic(TypeDiscriminatorPropertyName = "cardType")]
-    [JsonDerivedType(typeof(PokemonCardResponse), "pokemon")]
-    [JsonDerivedType(typeof(EnergyCardResponse), "energy")]
-    [JsonDerivedType(typeof(TrainerCardResponse), "trainer")]
-    public abstract record CardResponse(
-        int NumberInDeck,
-        string Category,
-        string Id,
-        string Image,
-        string Name,
-        string Description
-    );
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "category")]
+    [JsonDerivedType(typeof(CardResponse), "")]
+    [JsonDerivedType(typeof(PokemonCardResponse), typeDiscriminator: "Pokemon")]
+    [JsonDerivedType(typeof(TrainerCardResponse), typeDiscriminator: "Trainer")]
+    [JsonDerivedType(typeof(EnergyCardResponse), typeDiscriminator: "Energy")]
+    public class CardResponse
+    {
+        public int NumberInDeck { get; set; }
+        [JsonPropertyName("category")]
+        [JsonIgnore]
+        public string Category { get; set; } = string.Empty;
+        public required string Id { get; set; }
+        public required string Image { get; set; }
+        public required string Name { get; set; }
+        public string Description { get; set; } = string.Empty;
+    }
 
-    public record PokemonCardResponse(
-        int NumberInDeck,
-        string Category,
-        string Id,
-        string Image,
-        string Name,
-        string Description,
-        int Hp,
-        List<string> Types,
-        string EvolveFrom,
-        string Stage,
+    public class PokemonCardResponse : CardResponse
+    {
+        public int Hp { get; set; }
+        public List<string> Types { get; set; } = [];
+        public string EvolveFrom { get; set; } = string.Empty;
+        public string Stage { get; set; } = string.Empty;
+        public int RetreatCost { get; set; }
         //List<AbilityDto> Abilities,
         //List<AttackDto> Attacks,
         //List<WeaknessDto> Weaknesses,
         //List<ResistanceDto> Resistances,
-        int RetreatCost
-    ) : CardResponse(NumberInDeck, Category, Id, Image, Name, Description);
+    }
 
-    public record EnergyCardResponse(
-        int NumberInDeck,
-        string Category,
-        string Id,
-        string Image,
-        string Name,
-        string Description,
-        string Effect,
-        string EnergyType,
-        string EnergyColor
-    ) : CardResponse(NumberInDeck, Category, Id, Image, Name, Description);
+    public class EnergyCardResponse : CardResponse
+    {
+        public string Effect { get; set; } = string.Empty;
+        public string EnergyType { get; set; } = string.Empty;
+        public string EnergyColor { get; set; } = string.Empty;
+    }
 
-    public record TrainerCardResponse(
-        int NumberInDeck,
-        string Category,
-        string Id,
-        string Image,
-        string Name,
-        string Description,
-        string Effect,
-        string TrainerType
-    ) : CardResponse(NumberInDeck, Category, Id, Image, Name, Description);
+    public class TrainerCardResponse : CardResponse
+    {
+        public string Effect { get; set; } = string.Empty;
+        public string TrainerType { get; set; } = string.Empty;
+    }
 }

@@ -4,8 +4,6 @@
     <Project Path="PokeMatch.ServiceDefaults/PokeMatch.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
-    <File Path=".env" />
-    <File Path=".env.Development" />
     <File Path=".gitignore" />
   </Folder>
   <Project Path="DeckApi/DeckApi.csproj" />

@@ -11,6 +11,7 @@ namespace PokeMatch.Shared.Responses
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool IsDefault { get; set; }
+        public List<string> CardIds { get; set; } = [];
         public List<CardResponse> Cards { get; set; } = [];
     }
 }
