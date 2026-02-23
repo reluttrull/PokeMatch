@@ -86,11 +86,12 @@
                 <div class="bench-spot card-container" id="player-bench-5"></div>
             </div>
             <div class="player-hand">
-                    @foreach (Model.Card card in GameState?.Player1.Hand ?? [])
+                @for (int i = 0; i < GameState?.Player1.Hand.Count; i++)
                     {
-                        <div class="player-hand-spot card-container">
-                            <Card ImageUrl=@card.Image />
-                        </div>
+                    <div class="player-hand-spot card-container" 
+                        style="transform: rotate(@GetHandCardRotationDegrees(i)deg); left: @(GetHandCardOffset(i))px; position: relative;">
+                        <Card ImageUrl=@GameState?.Player1.Hand[i].Image />
+                    </div>
                     }
             </div>
         </div>
@@ -116,6 +117,18 @@
     public int UserId { get; set;  }
 
     private GameState? GameState { get; set; }
+
+    private int GetHandCardRotationDegrees(int idx)
+    {
+        var middle = GameState?.Player1.Hand.Count / 2;
+        return (idx - middle ?? 0) * 7;
+    }
+
+    private int GetHandCardOffset(int idx)
+    {
+        var middle = GameState?.Player1.Hand.Count / 2;
+        return (idx - middle ?? 0) * -20;
+    }
 
 
     protected override async Task OnInitializedAsync()
