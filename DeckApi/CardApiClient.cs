@@ -1,5 +1,6 @@
 ﻿using PokeMatch.Shared.Responses;
 using StackExchange.Redis;
+using System.Text.Json;
 
 namespace DeckApi
 {
@@ -16,6 +17,19 @@ namespace DeckApi
 
         public async Task<CardResponse?> GetCardByIdAsync(string id, CancellationToken token = default)
         {
+            bool useCache = _redis.IsConnected;
+            var db = useCache ? _redis.GetDatabase() : null;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            if (db?.KeyExists(id) ?? false)
+            {
+                System.Diagnostics.Debug.WriteLine($"Using cached data for card {id}");
+                var cachedCardJson = db.StringGet(id);
+                var cachedCard = JsonSerializer.Deserialize<CardResponse>(cachedCardJson.ToString(), options);
+                if (cachedCard is not null) return cachedCard;
+            }
             var response = await _client.GetAsync(id, token);
             if (!response.IsSuccessStatusCode)
             {
@@ -26,7 +40,10 @@ namespace DeckApi
                 if (!response.IsSuccessStatusCode) throw new HttpRequestException("failed to retrieve card data from TCGDex API");
             }
             response.EnsureSuccessStatusCode();
-            var card = await response.Content.ReadFromJsonAsync<CardResponse>(cancellationToken: token);
+            var cardJson = await response.Content.ReadAsStringAsync(cancellationToken: token);
+            db?.StringSet(id, cardJson);
+            System.Diagnostics.Debug.WriteLine($"Writing to cache for card {id}");
+            var card = JsonSerializer.Deserialize<CardResponse>(cardJson.ToString(), options);
             return card;
         }
     }
