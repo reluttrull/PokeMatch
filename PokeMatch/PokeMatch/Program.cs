@@ -17,6 +17,7 @@ builder.Services.AddHttpClient<IDeckClient, DeckClient>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7097");
 });
+builder.Services.AddMemoryCache();
 builder.Services.AddServices();
 
 // Add services to the container.

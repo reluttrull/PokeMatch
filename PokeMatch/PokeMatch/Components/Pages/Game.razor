@@ -133,7 +133,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GameState = await ManagementService.StartGame(UserId);
-        System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState.Player1.Deck.Cards.Count} cards in deck and {GameState.Player1.Hand.Count} cards in hand.");
+        if (ManagementService.TryReloadMatchForUser(UserId, out GameState? existingGame))
+        {
+            GameState = existingGame;
+            System.Diagnostics.Debug.WriteLine("Loading existing game");
+        }
+        else
+        {
+            GameState = await ManagementService.StartGame(UserId);
+            System.Diagnostics.Debug.WriteLine("Starting new game");
+        }
+        System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState?.Player1.Deck.Cards.Count} cards in deck and {GameState?.Player1.Hand.Count} cards in hand.");
     }
 }
