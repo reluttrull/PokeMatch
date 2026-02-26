@@ -1,5 +1,4 @@
 ﻿using PokeMatch.Services;
-using StackExchange.Redis;
 
 namespace PokeMatch.Extensions
 {

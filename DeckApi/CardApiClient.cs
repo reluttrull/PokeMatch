@@ -17,6 +17,7 @@ namespace DeckApi
 
         public async Task<CardResponse?> GetCardByIdAsync(string id, CancellationToken token = default)
         {
+            // todo: clean up this method
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,

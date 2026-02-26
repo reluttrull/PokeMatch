@@ -1,9 +1,7 @@
-using DotNetEnv;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PokeMatch;
-using PokeMatch.Client.Pages;
 using PokeMatch.Components;
 using PokeMatch.Components.Account;
 using PokeMatch.Data;

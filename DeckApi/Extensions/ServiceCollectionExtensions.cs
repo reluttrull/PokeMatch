@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
-using StackExchange.Redis;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Backplane.StackExchangeRedis;
 using ZiggyCreatures.Caching.Fusion.Serialization.SystemTextJson;
@@ -11,7 +10,7 @@ namespace DeckApi.Extensions
         public static IServiceCollection AddCache(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING");
-            if (string.IsNullOrWhiteSpace(connectionString)) return services;
+            if (string.IsNullOrWhiteSpace(connectionString)) return services;  // todo: handle missing connection string better
 
             services.AddFusionCache()
                 .WithSerializer(new FusionCacheSystemTextJsonSerializer())
