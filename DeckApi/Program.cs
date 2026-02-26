@@ -22,7 +22,7 @@ if (builder.Environment.IsDevelopment())
 builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddRedis();
+builder.Services.AddCache();
 builder.Services.AddHttpClient<ICardApiClient, CardApiClient>(client =>
 {
     client.BaseAddress = new Uri("https://api.tcgdex.net/v2/en/cards/");

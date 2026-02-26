@@ -1,33 +1,31 @@
 ﻿using PokeMatch.Shared.Responses;
-using StackExchange.Redis;
 using System.Text.Json;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace DeckApi
 {
     public class CardApiClient : ICardApiClient
     {
         private readonly HttpClient _client;
-        private readonly IConnectionMultiplexer _redis;
+        private readonly IFusionCache _cache;
 
-        public CardApiClient(HttpClient client, IConnectionMultiplexer redis)
+        public CardApiClient(HttpClient client, IFusionCache cache)
         {
             _client = client;
-            _redis = redis;
+            _cache = cache;
         }
 
         public async Task<CardResponse?> GetCardByIdAsync(string id, CancellationToken token = default)
         {
-            bool useCache = _redis.IsConnected;
-            var db = useCache ? _redis.GetDatabase() : null;
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
-            if (db?.KeyExists(id) ?? false)
+            var maybeCachedCard = await _cache.TryGetAsync<string>(id, token: token);
+            if (maybeCachedCard.HasValue)
             {
                 System.Diagnostics.Debug.WriteLine($"Using cached data for card {id}");
-                var cachedCardJson = db.StringGet(id);
-                var cachedCard = JsonSerializer.Deserialize<CardResponse>(cachedCardJson.ToString(), options);
+                var cachedCard = JsonSerializer.Deserialize<CardResponse>(maybeCachedCard.Value, options);
                 if (cachedCard is not null) return cachedCard;
             }
             var response = await _client.GetAsync(id, token);
@@ -41,7 +39,9 @@ namespace DeckApi
             }
             response.EnsureSuccessStatusCode();
             var cardJson = await response.Content.ReadAsStringAsync(cancellationToken: token);
-            db?.StringSet(id, cardJson);
+            if (cardJson is null) return null;
+
+            _cache.Set(id, cardJson, token: token);
             System.Diagnostics.Debug.WriteLine($"Writing to cache for card {id}");
             var card = JsonSerializer.Deserialize<CardResponse>(cardJson.ToString(), options);
             return card;
