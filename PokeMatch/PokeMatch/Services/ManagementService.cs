@@ -4,6 +4,7 @@ using PokeMatch.Components.Pages;
 using PokeMatch.Extensions;
 using PokeMatch.Model;
 using PokeMatch.Shared.Responses;
+using System.Security.Cryptography;
 
 namespace PokeMatch.Services
 {
@@ -19,26 +20,40 @@ namespace PokeMatch.Services
         }
         public async Task<GameState> StartGame(int userId, CancellationToken token = default)
         {
-            if (userId == 0) // test data for now. todo: add player matching service
-            {
-                Player player1 = new() { UserId = 0, UserName = "Player" };
-                Player player2 = new() { UserId = 1, UserName = "Opponent" };
+            string joinCode = RandomNumberGenerator.GetHexString(8);
 
-                DeckResponse? deckResponse1 = await _deckClient.GetDeckByIdAsync(0);
-                DeckResponse? deckResponse2 = await _deckClient.GetDeckByIdAsync(1);
-                if (deckResponse1 is null || deckResponse2 is null) throw new NullReferenceException();
+            Player player1 = new() { UserId = userId, UserName = "Player" };
+            Player player2 = new() { UserId = -1, UserName = "Opponent" };
 
-                GameState game = new(player1, player2, deckResponse1.MapFromResponse(), deckResponse2.MapFromResponse());
-                game.InitializeGame();
+            DeckResponse? deckResponse1 = await _deckClient.GetDeckByIdAsync(0);
+            DeckResponse? deckResponse2 = await _deckClient.GetDeckByIdAsync(1);
+            if (deckResponse1 is null || deckResponse2 is null) throw new NullReferenceException();
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromHours(gameCacheTimeoutHours));
-                _gameCache.Set<GameState>(game.Player1.Player.UserId, game, cacheEntryOptions);
-                _gameCache.Set<GameState>(game.Player2.Player.UserId, game, cacheEntryOptions); // todo: only store once
+            GameState game = new(joinCode, player1, player2, deckResponse1.MapFromResponse(), deckResponse2.MapFromResponse());
+            game.InitializeGame();
 
-                return game;
-            }
-            throw new NotImplementedException();
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(gameCacheTimeoutHours));
+            _gameCache.Set<GameState>(game.Player1.Player.UserId, game, cacheEntryOptions);
+            _gameCache.Set<GameState>(joinCode, game, cacheEntryOptions);
+
+            return game;
+        }
+
+        public async Task<GameState?> JoinGame(int userId, string joinCode, CancellationToken token = default)
+        {
+            var success = _gameCache.TryGetValue<GameState>(joinCode, out var game);
+            if (!success || game is null) return null;
+
+            game.Player2.Player.UserId = userId;
+
+            _gameCache.Remove(joinCode);
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(gameCacheTimeoutHours));
+            _gameCache.Set<GameState>(userId, game, cacheEntryOptions);
+            _gameCache.Set<GameState>(game.Player1.Player.UserId, game, cacheEntryOptions); // todo: only store once
+
+            return game;
         }
 
         public bool TryReloadMatchForUser(int userId, out GameState? existingGame)
@@ -51,5 +66,6 @@ namespace PokeMatch.Services
     {
         public bool TryReloadMatchForUser(int userId, out GameState? existingGame);
         public Task<GameState> StartGame(int userId, CancellationToken token = default);
+        public Task<GameState?> JoinGame(int userId, string accessCode, CancellationToken token = default);
     }
 }

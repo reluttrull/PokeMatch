@@ -2,124 +2,157 @@
 @using PokeMatch.Components.Modules
 @using PokeMatch.Model
 @using PokeMatch.Services
+@rendermode InteractiveServer
 @layout EmptyLayout
 @inject IManagementService ManagementService
 
-<div class="container">
-    <div class="opponent-info-row">
-        <div></div>
-        <div class="opponent-info">opponent info</div>
-    </div>
-    <div class="opponent-area">
-        <div class="side-pocket">
-            <div class="opponent-left-side-pocket">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div class="opponent-discard card-container">DIS</div>
-                <div></div>
-                <div></div>
-                <div class="opponent-deck card-container">DCK</div>
-            </div>
+@if (IsGameStarted)
+{
+    <div class="container">
+        <div class="opponent-info-row">
+            <div></div>
+            <div class="opponent-info">opponent info</div>
+        </div>
+        <div class="opponent-area">
+            <div class="side-pocket">
+                <div class="opponent-left-side-pocket">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="opponent-discard card-container">DIS</div>
+                    <div></div>
+                    <div></div>
+                    <div class="opponent-deck card-container">DCK</div>
+                </div>
 
-        </div>
-        <div class="opponent-play-area">
-            <div class="opponent-hand">
-                <div class="opponent-hand-spot card-container" id="opponent-hand-1"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-2"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-3"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-4"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-5"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-6"></div>
-                <div class="opponent-hand-spot card-container" id="opponent-hand-7"></div>
             </div>
-            <div class="opponent-bench">
-                <div class="bench-spot card-container" id="opponent-bench-1"></div>
-                <div class="bench-spot card-container" id="opponent-bench-2"></div>
-                <div class="bench-spot card-container" id="opponent-bench-3"></div>
-                <div class="bench-spot card-container" id="opponent-bench-4"></div>
-                <div class="bench-spot card-container" id="opponent-bench-5"></div>
+            <div class="opponent-play-area">
+                <div class="opponent-hand">
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-1"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-2"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-3"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-4"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-5"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-6"></div>
+                    <div class="opponent-hand-spot card-container" id="opponent-hand-7"></div>
+                </div>
+                <div class="opponent-bench">
+                    <div class="bench-spot card-container" id="opponent-bench-1"></div>
+                    <div class="bench-spot card-container" id="opponent-bench-2"></div>
+                    <div class="bench-spot card-container" id="opponent-bench-3"></div>
+                    <div class="bench-spot card-container" id="opponent-bench-4"></div>
+                    <div class="bench-spot card-container" id="opponent-bench-5"></div>
+                </div>
+                <div class="opponent-active">
+                    <div class="active-spot card-container" id="opponent-active-0"></div>
+                </div>
             </div>
-            <div class="opponent-active">
-                <div class="active-spot card-container" id="opponent-active-0"></div>
-            </div>
-        </div>
-        <div class="side-pocket">
-            <div class="opponent-prizes">
-                <div id="opponent-prize-1" class="card-container"></div>
-                <div id="opponent-prize-2" class="card-container"></div>
-                <div id="opponent-prize-3" class="card-container"></div>
-                <div id="opponent-prize-4" class="card-container"></div>
-                <div id="opponent-prize-5" class="card-container"></div>
-                <div id="opponent-prize-6" class="card-container"></div>
-            </div>
-        </div>
-    </div>
-    <div class="shared-area">
-        <div></div>
-        <div class="stadium card-container">STD</div>
-        <div></div>
-        <div></div>
-        <div class="timer">15:00</div>
-    </div>
-    <div class="player-area">
-        <div class="side-pocket">
-            <div class="player-prizes">
-                <div id="player-prize-1" class="card-container"></div>
-                <div id="player-prize-2" class="card-container"></div>
-                <div id="player-prize-3" class="card-container"></div>
-                <div id="player-prize-4" class="card-container"></div>
-                <div id="player-prize-5" class="card-container"></div>
-                <div id="player-prize-6" class="card-container"></div>
+            <div class="side-pocket">
+                <div class="opponent-prizes">
+                    <div id="opponent-prize-1" class="card-container"></div>
+                    <div id="opponent-prize-2" class="card-container"></div>
+                    <div id="opponent-prize-3" class="card-container"></div>
+                    <div id="opponent-prize-4" class="card-container"></div>
+                    <div id="opponent-prize-5" class="card-container"></div>
+                    <div id="opponent-prize-6" class="card-container"></div>
+                </div>
             </div>
         </div>
-        <div class="player-play-area">
-            <div class="player-active">
-                <div class="active-spot card-container" id="player-active-0"></div> 
+        <div class="shared-area">
+            <div></div>
+            <div class="stadium card-container">STD</div>
+            <div></div>
+            <div></div>
+            <div class="timer">
+                <div>15:00</div>
+                <div>@GameState?.JoinCode</div>
             </div>
-            <div class="player-bench">
-                <div class="bench-spot card-container" id="player-bench-1"></div>
-                <div class="bench-spot card-container" id="player-bench-2"></div>
-                <div class="bench-spot card-container" id="player-bench-3"></div>
-                <div class="bench-spot card-container" id="player-bench-4"></div>
-                <div class="bench-spot card-container" id="player-bench-5"></div>
+        </div>
+        <div class="player-area">
+            <div class="side-pocket">
+                <div class="player-prizes">
+                    <div id="player-prize-1" class="card-container"></div>
+                    <div id="player-prize-2" class="card-container"></div>
+                    <div id="player-prize-3" class="card-container"></div>
+                    <div id="player-prize-4" class="card-container"></div>
+                    <div id="player-prize-5" class="card-container"></div>
+                    <div id="player-prize-6" class="card-container"></div>
+                </div>
             </div>
-            <div class="player-hand">
-                @for (int i = 0; i < PlayerSide?.Hand.Count; i++)
+            <div class="player-play-area">
+                <div class="player-active">
+                    <div class="active-spot card-container" id="player-active-0"></div> 
+                </div>
+                <div class="player-bench">
+                    <div class="bench-spot card-container" id="player-bench-1"></div>
+                    <div class="bench-spot card-container" id="player-bench-2"></div>
+                    <div class="bench-spot card-container" id="player-bench-3"></div>
+                    <div class="bench-spot card-container" id="player-bench-4"></div>
+                    <div class="bench-spot card-container" id="player-bench-5"></div>
+                </div>
+                <div class="player-hand">
+                    @for (int i = 0; i < PlayerSide?.Hand.Count; i++)
                     {
-                    <div class="player-hand-spot card-container" 
+                        <div class="player-hand-spot card-container" 
                         style="transform: rotate(@GetHandCardRotationDegrees(i)deg); left: @(GetHandCardOffset(i))px; position: relative;">
-                        <Card ImageUrl=@PlayerSide?.Hand[i].Image />
-                    </div>
+                            <Card ImageUrl=@PlayerSide?.Hand[i].Image />
+                        </div>
                     }
+                </div>
+            </div>
+            <div class="side-pocket">
+                <div class="player-right-side-pocket">
+                    <div></div>
+                    <div class="player-deck card-container">DCK</div>
+                    <div></div>
+                    <div></div>
+                    <div class="player-discard card-container">DIS</div>
+                </div>
             </div>
         </div>
-        <div class="side-pocket">
-            <div class="player-right-side-pocket">
-                <div></div>
-                <div class="player-deck card-container">DCK</div>
-                <div></div>
-                <div></div>
-                <div class="player-discard card-container">DIS</div>
-            </div>
+        <div class="player-info-row">
+            <div class="player-info">player info</div>
+            <div></div>
+        </div>
+    </div>            
+} else {
+    <div>
+        <div>
+            <button @onclick="StartNewGame">Start new game</button>
+        </div>
+        <div>
+            <input @bind="JoinCode" />
+            <button @onclick="JoinExistingGame">Join existing game</button>
         </div>
     </div>
-    <div class="player-info-row">
-        <div class="player-info">player info</div>
-        <div></div>
-    </div>
-</div>
+}
 
 @code {
 
     [Parameter]
     public int UserId { get; set;  }
 
+    private bool IsGameStarted { get; set; } = false;
+    private string JoinCode { get; set; } = string.Empty;
     private GameState? GameState { get; set; }
     private PlayerState? PlayerSide => GameState?.Player1.Player.UserId == UserId ? GameState?.Player1 : GameState?.Player2;
     private PlayerState? OpponentSide => GameState?.Player1.Player.UserId == UserId ? GameState?.Player2 : GameState?.Player1;
 
+
+    private async Task StartNewGame()
+    {
+        GameState = await ManagementService.StartGame(UserId);
+        System.Diagnostics.Debug.WriteLine("Starting new game");
+        IsGameStarted = true;
+    }
+
+    private async Task JoinExistingGame()
+    {
+        GameState = await ManagementService.JoinGame(UserId, JoinCode);
+        System.Diagnostics.Debug.WriteLine("Joining existing game");
+        IsGameStarted = true;
+    }
 
     private int GetHandCardRotationDegrees(int idx)
     {
@@ -138,14 +171,9 @@
     {
         if (ManagementService.TryReloadMatchForUser(UserId, out GameState? existingGame))
         {
+            IsGameStarted = true;
             GameState = existingGame;
             System.Diagnostics.Debug.WriteLine("Loading existing game");
         }
-        else
-        {
-            GameState = await ManagementService.StartGame(UserId);
-            System.Diagnostics.Debug.WriteLine("Starting new game");
-        }
-        System.Diagnostics.Debug.WriteLine($"Player 1 has {GameState?.Player1.Deck.Cards.Count} cards in deck and {GameState?.Player1.Hand.Count} cards in hand.");
     }
 }
